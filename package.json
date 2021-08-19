@@ -9,6 +9,10 @@
     "dist"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/utkarsh867/typegraphql-authchecker"
+  },
   "devDependencies": {
     "@types/node": "^16.6.2",
     "class-validator": "^0.13.1",
