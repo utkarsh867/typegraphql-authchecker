@@ -3,10 +3,10 @@
   "version": "0.0.2",
   "description": "Custom authcheckers for TypeGraphql made simple.",
   "author": "Utkarsh Goel",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "files": [
-    "dist"
+    "lib"
   ],
   "license": "MIT",
   "repository": {
