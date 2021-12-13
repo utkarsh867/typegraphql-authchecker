@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { AuthChecker, ResolverData } from "type-graphql";
+import { ResolverData } from "type-graphql";
 
 export type Rule<TContextType = {}> = (
   D: ResolverData<TContextType>
@@ -40,7 +40,7 @@ function isRulesArray(rules: Rules): rules is Rules[] {
   if (Array.isArray(rules)) {
     const isArrayOfRules = rules.reduce((isRuleAcc, rule) => {
       if (isRule(rule) || isRulesObject(rule)) {
-        return true;
+        return isRuleAcc && true;
       }
       return false;
     }, true);
@@ -88,8 +88,8 @@ export const authResolver: FAuthChecker = async (
       ? await rules.OR.reduce<boolean | Promise<boolean>>(
           async (andAcc, rule) => {
             return (
-              andAcc ||
-              (await authResolver({ root, args, context, info }, rule))
+              (await authResolver({ root, args, context, info }, rule)) ||
+              andAcc
             );
           },
           Promise.resolve(false)
