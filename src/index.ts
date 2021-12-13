@@ -69,9 +69,15 @@ export const authResolver: FAuthChecker = async (
     }, Promise.resolve(true));
   } else if (isRulesObject(rules)) {
     const andRules = rules.AND
-      ? await rules.AND.reduce<boolean | Promise<boolean>>((andAcc, rule) => {
-          return authResolver({ root, args, context, info }, rule) && andAcc;
-        }, Promise.resolve(true))
+      ? await rules.AND.reduce<boolean | Promise<boolean>>(
+          async (andAcc, rule) => {
+            return (
+              (await authResolver({ root, args, context, info }, rule)) &&
+              andAcc
+            );
+          },
+          Promise.resolve(true)
+        )
       : true;
     const notRules = rules.NOT
       ? await rules.NOT.reduce<boolean | Promise<boolean>>(
