@@ -1,2 +1,10 @@
+# IDE related
+.vscode/
+.idea/
+
+# Packages
 node_modules/
+
+# Generated folders
 lib/
+coverage/
