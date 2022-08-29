@@ -1,5 +1,4 @@
-import "reflect-metadata";
-import { ResolverData } from "type-graphql";
+import {ResolverData} from "type-graphql";
 
 export type Rule<TContextType = {}> = (
   D: ResolverData<TContextType>
@@ -105,6 +104,18 @@ export const authResolver: FAuthChecker = async (
   }
   return true;
 };
+
+export type CombineRules<TContextType = {}> = (rules: Rules<TContextType>) => Rules<TContextType>;
+
+export const createCustomAuthChecker = (combineRules: CombineRules): FAuthChecker => {
+    return async (
+        {root, args, context, info},
+        otherRules: Rules
+    ) => {
+        const rules = combineRules(otherRules);
+        return authResolver({root, args, context, info}, rules);
+    };
+}
 
 const authChecker: FAuthChecker = async (
   { root, args, context, info },
