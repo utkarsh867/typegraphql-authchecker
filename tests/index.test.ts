@@ -1,30 +1,5 @@
-import "reflect-metadata";
-
-import { authResolver, Rules } from "../src";
-
-const ruleIsTrue = (): boolean => {
-  console.log("sync ruleIsTrue");
-  return true;
-};
-
-const promisedRuleIsTrue = (): Promise<boolean> => {
-  console.log("async ruleIsTrue");
-  return new Promise((resolve, reject) => {
-    setTimeout(() => resolve(true), 100);
-  });
-};
-
-const ruleIsFalse = (): boolean => {
-  console.log("ruleIsFalse");
-  return false;
-};
-
-const promisedRuleIsFalse = (): Promise<boolean> => {
-  console.log("async ruleIsFalse");
-  return new Promise((resolve, reject) => {
-    setTimeout(() => resolve(false), 100);
-  });
-};
+import { authResolver } from "../src";
+import {promisedRuleIsFalse, promisedRuleIsTrue, ruleIsFalse, ruleIsTrue} from "./utils/rules";
 
 describe("can resolve AND functions", () => {
   it("returns false when one rule is false in async", async () => {
