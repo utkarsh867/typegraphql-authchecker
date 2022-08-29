@@ -60,12 +60,12 @@ function isRulesObject(rules: Rules): rules is RuleObject[] {
 export const authResolver: FAuthChecker = async (
   { root, args, context, info },
   rules: Rules
-) => {
+): Promise<boolean> => {
   if (isRule(rules)) {
-    return await rules({ root, args, context, info });
+    return rules({root, args, context, info});
   } else if (isRulesArray(rules)) {
-    return await rules.reduce<boolean | Promise<boolean>>(async (acc, rule) => {
-      return (await authResolver({ root, args, context, info }, rule)) && acc;
+    return rules.reduce<boolean | Promise<boolean>>(async (acc, rule) => {
+        return (await authResolver({root, args, context, info}, rule)) && acc;
     }, Promise.resolve(true));
   } else if (isRulesObject(rules)) {
     const andRules = rules.AND
@@ -110,7 +110,7 @@ const authChecker: FAuthChecker = async (
   { root, args, context, info },
   rules
 ) => {
-  return await authResolver({ root, args, context, info }, rules);
+  return authResolver({root, args, context, info}, rules);
 };
 
 export default authChecker;
