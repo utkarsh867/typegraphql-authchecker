@@ -58,8 +58,8 @@ function isRulesObject(rules: Rules): rules is RuleObject[] {
 
 export const authResolver: FAuthChecker = async (
   { root, args, context, info },
-  rules: Rules
-): Promise<boolean> => {
+  rules
+) => {
   if (isRule(rules)) {
     return rules({root, args, context, info});
   } else if (isRulesArray(rules)) {
