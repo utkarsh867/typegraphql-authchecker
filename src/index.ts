@@ -1,8 +1,16 @@
 import "reflect-metadata";
-import { ResolverData } from "type-graphql";
+import { ArgsDictionary, ResolverData } from "type-graphql";
 
-export type Rule<TContextType = {}> = (
-  D: ResolverData<TContextType>
+export interface ResolverDataWithArgs<
+  TArgsType extends ArgsDictionary,
+  TContextType = {}
+> extends ResolverData<TContextType> {
+  args: TArgsType;
+  context: TContextType;
+}
+
+export type Rule<TContextType = {}, TArgsType extends ArgsDictionary = {}> = (
+  D: ResolverDataWithArgs<TArgsType, TContextType>
 ) => boolean | Promise<boolean>;
 
 export type Rules<TContextType = {}> =
