@@ -1,6 +1,6 @@
 import "reflect-metadata";
 
-import { authResolver, Rules } from "../src";
+import { authResolver } from "../src";
 
 const ruleIsTrue = (): boolean => {
   console.log("sync ruleIsTrue");
