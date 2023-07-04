@@ -6,5 +6,4 @@
 node_modules/
 
 # Generated folders
-lib/
 coverage/
