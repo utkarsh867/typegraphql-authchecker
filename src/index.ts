@@ -3,29 +3,29 @@ import { ArgsDictionary, ResolverData } from "type-graphql";
 
 export interface ResolverDataWithArgs<
   TArgsType extends ArgsDictionary,
-  TContextType = {}
+  TContextType extends object = {}
 > extends ResolverData<TContextType> {
   args: TArgsType;
   context: TContextType;
 }
 
-export type Rule<TContextType = {}, TArgsType extends ArgsDictionary = {}> = (
+export type Rule<TContextType extends object = {}, TArgsType extends ArgsDictionary = {}> = (
   D: ResolverDataWithArgs<TArgsType, TContextType>
 ) => boolean | Promise<boolean>;
 
-export type Rules<TContextType = {}> =
+export type Rules<TContextType extends object = {}> =
   | Rule<TContextType>
   | RuleObject<TContextType>
   | Rules<TContextType>[];
 
-export interface RuleObject<TContextType = {}> {
+export interface RuleObject<TContextType extends object = {}> {
   OR?: Rules<TContextType>[];
   AND?: Rules<TContextType>[];
   NOT?: Rules<TContextType>[];
 }
 
 export type AuthCheckerFn<
-  TContextType = {},
+  TContextType extends object = {},
   TRoleType = Rules<TContextType>
 > = (
   resolverData: ResolverData<TContextType>,
@@ -33,7 +33,7 @@ export type AuthCheckerFn<
 ) => boolean | Promise<boolean>;
 
 export type FAuthChecker<
-  TContextType = {},
+  TContextType extends object = {},
   TRoleType = Rules<TContextType>
 > = AuthCheckerFn<TContextType, TRoleType>;
 
@@ -78,36 +78,36 @@ export const authResolver: FAuthChecker = async (
   } else if (isRulesObject(rules)) {
     const andRules = rules.AND
       ? await rules.AND.reduce<boolean | Promise<boolean>>(
-          async (andAcc, rule) => {
-            return (
-              (await authResolver({ root, args, context, info }, rule)) &&
-              andAcc
-            );
-          },
-          Promise.resolve(true)
-        )
+        async (andAcc, rule) => {
+          return (
+            (await authResolver({ root, args, context, info }, rule)) &&
+            andAcc
+          );
+        },
+        Promise.resolve(true)
+      )
       : true;
     const notRules = rules.NOT
       ? await rules.NOT.reduce<boolean | Promise<boolean>>(
-          async (notAcc, rule) => {
-            return (
-              !(await authResolver({ root, args, context, info }, rule)) &&
-              notAcc
-            );
-          },
-          Promise.resolve(true)
-        )
+        async (notAcc, rule) => {
+          return (
+            !(await authResolver({ root, args, context, info }, rule)) &&
+            notAcc
+          );
+        },
+        Promise.resolve(true)
+      )
       : true;
     const orRules = rules.OR
       ? await rules.OR.reduce<boolean | Promise<boolean>>(
-          async (andAcc, rule) => {
-            return (
-              (await authResolver({ root, args, context, info }, rule)) ||
-              andAcc
-            );
-          },
-          Promise.resolve(false)
-        )
+        async (andAcc, rule) => {
+          return (
+            (await authResolver({ root, args, context, info }, rule)) ||
+            andAcc
+          );
+        },
+        Promise.resolve(false)
+      )
       : true;
     return andRules && orRules && notRules;
   }
