@@ -1,10 +1,10 @@
 # TypeGraphQL AuthChecker
 
-Write rules for `Authorised()` decorator of [TypeGraphQL](https://github.com/MichalLytek/type-graphql) resolvers.
+Write rules for `Authorized()` decorator of [TypeGraphQL](https://github.com/MichalLytek/type-graphql) resolvers.
 
 ## Introduction
 
-I wanted to make rules for using Authorised decorator in TypeGraphQL resolvers just like I used to make them for [graphql-shield](https://github.com/maticzav/graphql-shield).
+I wanted to make rules for using Authorized decorator in TypeGraphQL resolvers just like I used to make them for [graphql-shield](https://github.com/maticzav/graphql-shield).
 
 TypeGraphQL allows creating custom authCheckers to use authorization rules. However, it seems limited by the fact that it checks against `roles` and not rules that can be defined by the developer. Additionally, there seems to be no way to define conditionals such as `AND` or `OR` in the authChecker unless implemented by the user from scratch.
 
